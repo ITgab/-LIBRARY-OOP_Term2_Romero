@@ -4,20 +4,22 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace _LIBRARY__OOP_Term2_Romero
 {
     internal class TasksClass
-    {
-        public string _FileName = "";
-        public Dictionary<string, List<string>> _LibraryCard = new Dictionary<string, List<string>>();
+    {      
+        List<List<string>> _details = new List<List<string>>();
         public List<string> _BooksAvailable = new List<string>();
         public List<string> _BooksToBorrow = new List<string>();
         public List<string> _BooksUnavailable = new List<string>();
         public string[] _temp = new string[] { };
+        public string _FileName = "";
         public string _uInput = "";
         public string _line = "";
         public string _status = "";
@@ -63,6 +65,7 @@ namespace _LIBRARY__OOP_Term2_Romero
 
         public void ReturnBook(string dateToday, string name)
         {
+            List<string> columnDetails = new List<string>();
             string[] dToday = new string[] { };
             string[] sched = new string[] { };
             string dTodayAsNUM = "";
@@ -86,10 +89,10 @@ namespace _LIBRARY__OOP_Term2_Romero
                             {
                                 _temp = _line.Split(',');
                                 _date = _temp[2];
-                                _BooksAvailable.Add(_temp[1]);
-                                _BooksUnavailable.Remove(_temp[1]);
 
                                 //update NotAvailable.txt REMOVE THE RETURNED BOOKS
+                                _BooksAvailable.Add(_temp[1]);
+                                _BooksUnavailable.Remove(_temp[1]);
 
                                 dToday = dateToday.Split('/');
                                 dTodayAsNUM = dToday[2] + dToday[0] + dToday[1]; //rebuild as a number but based on largest measurement
@@ -113,14 +116,13 @@ namespace _LIBRARY__OOP_Term2_Romero
                                     Console.ReadKey();
                                 }
 
-                                //HERE
-                                //HERE
-                                //HERE
-
-                                //COMPILE THEM ALL IN A LIST, FINISH THE STREAMREADER BEFORE DOING THE STREAMWRITE
-                                // [0] Date Borrowed , [1] Book Title , [2] Scheduled Return , [3] Date Returned , [4] Status
-
-                                //UpdateCard(name, dateToday, _date); DISREGARD
+                                for (int i = 0; i < _temp.Length; i++) //put the columns to a list
+                                {
+                                    columnDetails.Add(_temp[i]);
+                                }
+                                columnDetails.Add(dateToday); //add date returned
+                                columnDetails.Add(_status); //add status
+                                _details.Add(columnDetails); //store them into a list
                             }
                         }                       
                     }                
@@ -132,6 +134,7 @@ namespace _LIBRARY__OOP_Term2_Romero
                 Console.ReadKey();
                 CreateAccount(name);
             }
+            UpdateCard(name, dateToday, _date);
         }
 
         public void BorrowBook(string dateToday, string name)
@@ -290,15 +293,20 @@ namespace _LIBRARY__OOP_Term2_Romero
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(_FileName))
-                {
-                    sw.WriteLine("NAME: " + "," + name);
-                    sw.WriteLine();
-                    sw.WriteLine("Date Borrowed" + "," + "Book Title" + "," + "Scheduled Return" + "," + "Date Returned" + "," + "Status");
-                }
+                New_Or_ReWrite(_FileName, name);
                 Console.WriteLine("Account has been created. Press any key to continue.");
                 Console.ReadKey();
             }
+        }
+
+        public void New_Or_ReWrite(string _FileName, string name)
+        {
+            using (StreamWriter sw = new StreamWriter(_FileName))
+            {
+                sw.WriteLine("NAME: " + "," + name);
+                sw.WriteLine();
+                sw.WriteLine("Date Borrowed" + "," + "Book Title" + "," + "Scheduled Return" + "," + "Date Returned" + "," + "Status");
+            }          
         }
 
         public void ViewCard(string name)
@@ -323,18 +331,31 @@ namespace _LIBRARY__OOP_Term2_Romero
             _FileName = name + ".csv";
             if (File.Exists(_FileName))
             {
-                using (StreamWriter sw = File.AppendText(_FileName))
+                if (_BooksToBorrow.Count > 0) //BookBorrow
                 {
-                    if (_BooksToBorrow.Count > 0) //BookBorrow
+                    using (StreamWriter sw = File.AppendText(_FileName))
                     {
                         for (int x = 0; x < _BooksToBorrow.Count; x++)
                         {
                             sw.WriteLine(dateToday + "," + _BooksToBorrow[x] + "," + _date);
                         }
                     }
-                    else //BookReturn
+                }
+
+                else //BookReturn
+                {
+                    New_Or_ReWrite(_FileName, name);
+                    using (StreamWriter sw = File.AppendText(_FileName))
                     {
-                        sw.Write(dateToday + "," + _status);
+                        for (int x = 0; x < _details.Count; x++)
+                        {
+                            for (int y = 0; y < _details[x].Count; y++)
+                            {
+                                sw.Write(_details[x][y]);
+                                sw.Write(",");
+                            }
+                            sw.WriteLine();
+                        }
                     }
                 }
             }
