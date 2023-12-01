@@ -16,26 +16,60 @@ namespace _LIBRARY__OOP_Term2_Romero
         {
             bool repeat = true;
 
-            while (true)
+            while (repeat)
             {
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write("What is the date today? [MM/DD/YYYY] : ");
+                Console.Write("Do you want to run the library system? [Y/N]: ");
                 Console.ResetColor();
-                _dateToday = Console.ReadLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write("What is your name? [First Name, Last Name] : ");
-                Console.ResetColor();
-                _name = Console.ReadLine();
-                Console.WriteLine();
+                _uInput = Console.ReadLine().ToUpper();
+
+                if (_uInput != "Y" && _uInput != "N")
+                    continue;
+
+                repeat = RepeatProcess(repeat);
 
                 while (repeat)
                 {
-                    ProgramStart();
-                    repeat = RepeatProcess(repeat);
+                    Console.Clear();
+                    DateToday();
+
+                    while (repeat)
+                    {
+                        ProgramStart();
+
+                        Console.Clear();
+                        Console.Write("Are you a new user? [Y/N] : ");
+                        _uInput = Console.ReadLine().ToUpper();
+
+                        repeat = !RepeatProcess(repeat);
+                    }
+                    repeat = true;
+                    break;
                 }
-            }
-             
+
+                if (!repeat)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Press any key to exit.");
+                    Console.ReadKey();
+                    break;
+                }               
+            }            
+        }
+
+        static void DateToday()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("What is the date today? [MM/DD/YYYY] : ");
+            Console.ResetColor();
+            _dateToday = Console.ReadLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("What is your name? [First Name, Last Name] : ");
+            Console.ResetColor();
+            _name = Console.ReadLine();
+            Console.WriteLine();
         }
 
         public static void ProgramStart()
@@ -105,18 +139,14 @@ namespace _LIBRARY__OOP_Term2_Romero
         {
             while (true)
             {
-                Console.Clear();
-                Console.Write("Are you a new user? [Y/N] : ");
-                _uInput = Console.ReadLine().ToUpper();
-
                 if (_uInput == "Y")
                 {
-                    repeat = false;
+                    repeat = true;
                     return repeat;
                 }
                 else if (_uInput.ToUpper() == "N")
                 {
-                    repeat = true;
+                    repeat = false;
                     return repeat;
                 }
                 else
