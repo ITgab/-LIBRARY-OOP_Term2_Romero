@@ -82,6 +82,10 @@ namespace _LIBRARY__OOP_Term2_Romero
             while (true)
             {
                 Console.Clear();
+                Console.ForegroundColor= ConsoleColor.Cyan;
+                Console.WriteLine("Date Today: {0}",_dateToday);
+                Console.ResetColor();
+                Console.WriteLine();
                 Console.WriteLine("----------------------------------------");
                 Console.BackgroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine("|        Welcome to the library        |");

@@ -79,6 +79,10 @@ namespace _LIBRARY__OOP_Term2_Romero
             {
                 using (StreamReader sr = new StreamReader(_FileName))
                 {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Date Today: {0}", dateToday);
+                    Console.ResetColor();
+                    Console.WriteLine();
                     Console.WriteLine("Checking the books........");
                     Console.WriteLine();
                     while ((_line = sr.ReadLine()) != null)
@@ -103,14 +107,20 @@ namespace _LIBRARY__OOP_Term2_Romero
                                 if (int.Parse(dTodayAsNUM) > int.Parse(schedAsNUM)) //LATE
                                 {
                                     _status = "Late";
-                                    Console.WriteLine("You returned {0} late. Press any key to continue.", _temp[1]);
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("You returned {0} late", _temp[1]);
+                                    Console.ResetColor();
+                                    Console.WriteLine("Press any key to continue.......");
                                     Console.WriteLine();
                                     Console.ReadKey();
                                 }
                                 else
                                 {
                                     _status = "On time";
-                                    Console.WriteLine("You returned {0} on time. Press any key to continue.", _temp[1]);
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("You returned {0} on time", _temp[1]);
+                                    Console.ResetColor();
+                                    Console.WriteLine("Press any key to continue.......");                                   
                                     Console.WriteLine();
                                     Console.ReadKey();
                                 }
@@ -163,6 +173,10 @@ namespace _LIBRARY__OOP_Term2_Romero
                 while (true) //book library
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Date Today: {0}", dateToday);
+                    Console.ResetColor();
+                    Console.WriteLine();
                     BookLibrary();
 
                     int libraryIDX = 0;
