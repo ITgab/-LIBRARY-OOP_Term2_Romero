@@ -19,6 +19,15 @@ namespace _LIBRARY__OOP_Term2_Romero
             while (repeat)
             {
                 Console.Clear();
+
+                DateTime now = DateTime.Now;
+                _dateToday = now.ToString("MM/dd/yyyy");
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Date Today: {0}", _dateToday);
+                Console.ResetColor();
+                Console.WriteLine();
+
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("Do you want to run the library system? [Y/N]: ");
                 Console.ResetColor();
@@ -39,6 +48,10 @@ namespace _LIBRARY__OOP_Term2_Romero
                         ProgramStart();
 
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Date Today: {0}", _dateToday);
+                        Console.ResetColor();
+                        Console.WriteLine();
                         Console.Write("Are you a new user? [Y/N] : ");
                         _uInput = Console.ReadLine().ToUpper();
 
@@ -60,14 +73,15 @@ namespace _LIBRARY__OOP_Term2_Romero
 
         static void DateToday()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("What is the date today? [MM/DD/YYYY] : ");
+            //Console.ForegroundColor = ConsoleColor.Blue;
+            //Console.Write("What is the date today? [MM/DD/YYYY] : ");
+            //Console.ResetColor();
+            //_dateToday = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Date Today: {0}", _dateToday);
             Console.ResetColor();
-            _dateToday = Console.ReadLine();
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("What is your name? [First Name, Last Name] : ");
-            Console.ResetColor();
+            Console.Write("What is your name? ");
             _name = Console.ReadLine();
             Console.WriteLine();
         }
